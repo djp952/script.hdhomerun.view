@@ -12,7 +12,7 @@ except:
     from ordereddict_compat import OrderedDict
 
 from lib import util
-import errors
+from . import errors
 
 GUIDE_URL = 'http://api.hdhomerun.com/api/guide.php?DeviceAuth={0}'
 SLICE_URL = 'http://api.hdhomerun.com/api/guide.php?DeviceAuth={deviceAuth}&Channel={channel}{start}'
@@ -602,7 +602,7 @@ class Guide(object):
         self.guide = OrderedDict()
         if not lineup:
             return
-        url = GUIDE_URL.format(urllib.quote(lineup.apiAuthID(),''))
+        url = GUIDE_URL.format(urllib.parse.quote(lineup.apiAuthID(),''))
 
         data = self.getData(url)
 

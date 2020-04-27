@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import sys, binascii, json, threading, time, datetime
 import xbmc, xbmcgui, xbmcaddon, xbmcvfs
-import verlib
+from . import verlib
 
 DEBUG = True
 
@@ -17,8 +17,7 @@ def DEBUG_LOG(msg):
     LOG(msg)
 
 def ERROR(txt='',hide_tb=False,notify=False):
-    if isinstance (txt,str): txt = txt.decode("utf-8")
-    short = str(sys.exc_info()[1])
+    short = sys.exc_info()[1]
     if hide_tb:
         xbmc.log('script.hdhomerun.view: ERROR: {0} - {1}'.format(txt,short),xbmc.LOGERROR)
         return short
@@ -74,7 +73,7 @@ def getGlobalProperty(key):
 
 def showNotification(message,time_ms=3000,icon_path=None,header=ADDON.getAddonInfo('name')):
     try:
-        icon_path = icon_path or xbmc.translatePath(ADDON.getAddonInfo('icon')).decode('utf-8')
+        icon_path = icon_path or xbmc.translatePath(ADDON.getAddonInfo('icon'))
         xbmc.executebuiltin('Notification({0},{1},{2},{3})'.format(header,message,time_ms,icon_path))
     except RuntimeError: #Happens when disabling the addon
         LOG(message)
