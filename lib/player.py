@@ -57,7 +57,7 @@ class HDHRPlayer(xbmc.Player):
 
         return self
 
-    def onPlayBackStarted(self):
+    def onAVStarted(self):
         self.status('STARTED')
         if False and self.status.channel:
             util.DEBUG_LOG('Saving successful channel number as last: {0}'.format(self.status.channel.number))
