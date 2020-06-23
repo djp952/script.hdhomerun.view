@@ -107,6 +107,7 @@ class HDHRPlayer(xbmc.Player):
                 'Studio': channel.guide.affiliate
         }
         item.setInfo('video', info)
+        item.setProperty('isrealtimestream', 'true')
         util.setSetting('last.channel', channel.number)
         self.status('NOT_STARTED',channel,item)
         args = self.getArgs()
