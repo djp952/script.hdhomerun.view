@@ -107,6 +107,7 @@ class HDHRPlayer(xbmc.Player):
                 'Studio': channel.guide.affiliate
         }
         item.setInfo('video', info)
+        item.setMimeType('video/mp2t')
         item.setProperty('isrealtimestream', 'true')
         util.setSetting('last.channel', channel.number)
         self.status('NOT_STARTED',channel,item)
@@ -118,6 +119,7 @@ class HDHRPlayer(xbmc.Player):
         li.setInfo('video',{'duration':str(rec.duration/60),'title':rec.episodeTitle,'tvshowtitle':rec.seriesTitle})
         li.addStreamInfo('video',{'duration':rec.duration})
         li.setIconImage(rec.icon)
+        li.setMimeType('video/mp2t')
         self.play(rec.playURL,li,self.touchMode,0)
 
     def isPlayingHDHR(self):
