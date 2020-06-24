@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
-from . import crc32c
+import crc32c
 import binascii
 import socket
 import traceback
 import struct
-from io import BytesIO
+import StringIO
 import time
 import base64
 import requests
-from . import errors
+import errors
 from lib import util
 
 DEVICE_DISCOVERY_PORT = 65001
@@ -52,7 +52,7 @@ class Devices(object):
         self.discover()
 
     def discover(self, device=None):
-        from . import netif
+        import netif
         ifaces = netif.getInterfaces()
         sockets = []
         for i in ifaces:
@@ -114,7 +114,7 @@ class Devices(object):
 
     @property
     def allDevices(self):
-        return list(self.tunerDevices) + self.storageServers + self._other
+        return self.tunerDevices + self.storageServers + self._other
 
     def isOld(self):
         return (time.time() - self._discoveryTimestamp) > self.MAX_AGE
@@ -159,7 +159,7 @@ class Devices(object):
             traceback.print_exc()
             return None
 
-        dataIO = BytesIO(data)
+        dataIO = StringIO.StringIO(data)
 
         tag, length = struct.unpack('>BB',dataIO.read(2))
         deviceType = struct.unpack('>I',dataIO.read(length))[0]
@@ -211,7 +211,7 @@ class Devices(object):
         return True
 
     def getDeviceByIP(self,ip):
-        for d in list(self.tunerDevices) + self.storageServers:
+        for d in self.tunerDevices + self.storageServers:
             if d.ip == ip:
                 return d
         return None
@@ -223,7 +223,7 @@ class Devices(object):
             ids.append(d.ID)
             authID = d.deviceAuth
             if not authID: continue
-            combined += authID.decode('utf-8')
+            combined += authID
 
         if not combined:
             util.LOG('WARNING: No device auth for any devices!')
@@ -275,7 +275,6 @@ class TunerDevice(Device):
         if not url:
             url = LINEUP_URL_BASE.format(ip=self.ip)
 
-        if isinstance(url, (bytes,bytearray)): url = url.decode('utf-8')
         if '?' in url:
             url += '&show=demo'
         else:

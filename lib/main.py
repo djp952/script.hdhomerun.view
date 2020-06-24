@@ -2,14 +2,14 @@
 import time, random, threading
 import xbmc, xbmcgui
 
-from . import actionconstants
-from . import hdhr
-from . import kodigui
-from . import util
-from . import player
-from . import skin
-from . import dvr
-from . import record
+import actionconstants
+import hdhr
+import kodigui
+import util
+import player
+import skin
+import dvr
+import record
 
 API_LEVEL = 2
 
