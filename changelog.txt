@@ -1,6 +1,5 @@
 ** 2020.6.23 **
 
-Initial Python 3 support
 Fix for buffering of live channels a few seconds after playback starts
 Fix recordings when used with updated RECORD engine(s)
 Fix tuner fallback mechanism based on player status
