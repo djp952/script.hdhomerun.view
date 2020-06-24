@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 import xbmc, xbmcgui
-import util
+from . import util
 
 TRANSCODE_PROFILES = (None,'none','heavy','mobile','internet540','internet480','internet360','internet240')
 
@@ -148,7 +148,7 @@ class FullsceenVideoInitializer(xbmc.Player):
         self._finished = False
         if self.isPlaying():
             return self.finish()
-        dummy = os.path.join(xbmc.translatePath(util.ADDON.getAddonInfo('path')).decode('utf-8'),'resources','dummy.mp4')
+        dummy = os.path.join(xbmc.translatePath(util.ADDON.getAddonInfo('path')),'resources','dummy.mp4')
         self.play(dummy)
         while not self._finished:
             xbmc.sleep(100)

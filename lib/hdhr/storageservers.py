@@ -2,8 +2,8 @@
 import requests
 import urllib
 import time
-import guide
-import errors
+from . import guide
+from . import errors
 from lib import util
 
 MY = 'api'
