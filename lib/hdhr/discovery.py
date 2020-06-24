@@ -346,15 +346,22 @@ class StorageServer(Device):
         except:
             util.ERROR('Failed to format {0} info'.format(self.typeName),hide_tb=True)
 
-    def recordings(self):
-        util.DEBUG_LOG('Getting recordings from: {0}'.format(self.storageURL))
-        req = requests.get(self.storageURL)
+    def recordedSeries(self):
+        storageUrl = self.storageURL
+
+        if '?' in storageUrl:
+            storageUrl += '&DisplayGroupID=root'
+        else:
+            storageUrl += '?DisplayGroupID=root'
+
+        util.DEBUG_LOG('Getting recorded series from: {0}'.format(storageUrl))
+        req = requests.get(storageUrl)
 
         try:
-            recordings = req.json()
-            return recordings
+            recordedSeries = req.json()
+            return recordedSeries
         except:
-            util.ERROR('Failed to parse recordings JSON data.',hide_tb=True)
+            util.ERROR('Failed to parse recorded series JSON data.',hide_tb=True)
             return None
 
     def syncRules(self):
