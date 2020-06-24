@@ -2,7 +2,7 @@
 import os
 import json
 import xbmc, xbmcvfs
-from . import util
+import util
 
 #Skins that work without font modification:
 #
@@ -36,8 +36,8 @@ FONT_TRANSLATIONS = {
 FONTS = ('font10','font13','font30')
 
 VERSION = util.ADDON.getAddonInfo('version')
-VERSION_FILE = os.path.join(xbmc.translatePath(util.ADDON.getAddonInfo('profile')),'skin','version')
-KODI_VERSION_FILE = os.path.join(xbmc.translatePath(util.ADDON.getAddonInfo('profile')),'skin','kodi_version')
+VERSION_FILE = os.path.join(xbmc.translatePath(util.ADDON.getAddonInfo('profile')).decode('utf-8'),'skin','version')
+KODI_VERSION_FILE = os.path.join(xbmc.translatePath(util.ADDON.getAddonInfo('profile')).decode('utf-8'),'skin','kodi_version')
 
 def skinningAPIisOld():
     try:
@@ -86,19 +86,19 @@ def currentKodiSkin():
 
 def setupDynamicSkin():
     import shutil
-    targetDir = os.path.join(xbmc.translatePath(util.ADDON.getAddonInfo('profile')),'skin','resources')
+    targetDir = os.path.join(xbmc.translatePath(util.ADDON.getAddonInfo('profile')).decode('utf-8'),'skin','resources')
     target = os.path.join(targetDir,'skins')
 
     if os.path.exists(target):
         shutil.rmtree(target,True)
     if not os.path.exists(targetDir): os.makedirs(targetDir)
 
-    source = os.path.join(xbmc.translatePath(util.ADDON.getAddonInfo('path')),'resources','skins')
+    source = os.path.join(xbmc.translatePath(util.ADDON.getAddonInfo('path')).decode('utf-8'),'resources','skins')
     copyTree(source,target)
 
 def customizeSkinXML(skin,xml):
-    source = os.path.join(xbmc.translatePath(util.ADDON.getAddonInfo('path')),'resources','skins','Main','1080i',xml)
-    target = os.path.join(xbmc.translatePath(util.ADDON.getAddonInfo('profile')),'skin','resources','skins','Main','1080i',xml)
+    source = os.path.join(xbmc.translatePath(util.ADDON.getAddonInfo('path')).decode('utf-8'),'resources','skins','Main','1080i',xml)
+    target = os.path.join(xbmc.translatePath(util.ADDON.getAddonInfo('profile')).decode('utf-8'),'skin','resources','skins','Main','1080i',xml)
     with open(source,'r') as s:
         data = s.read()
 
@@ -129,6 +129,7 @@ def kodiHasOldStringInfoLabels():
 
 def getKodiVersion():
     json_query = xbmc.executeJSONRPC('{ "jsonrpc": "2.0", "method": "Application.GetProperties", "params": {"properties": ["version", "name"]}, "id": 1 }')
+    json_query = unicode(json_query, 'utf-8', errors='ignore')
     json_query = json.loads(json_query)
     return json_query['result']['version']
 
@@ -156,4 +157,4 @@ def getSkinPath():
             util.ERROR()
             return default
 
-    return os.path.join(xbmc.translatePath(util.ADDON.getAddonInfo('profile')),'skin')
+    return os.path.join(xbmc.translatePath(util.ADDON.getAddonInfo('profile')).decode('utf-8'),'skin')

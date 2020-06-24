@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 import time, threading
 import xbmc, xbmcgui
-from . import kodigui
-from . import hdhr
-from . import skin
-from . import record
+import kodigui
+import hdhr
+import skin
+import record
 
-from . import util
-from .util import T
+import util
+from util import T
 
 
 class EpisodesDialog(kodigui.BaseDialog):

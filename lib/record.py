@@ -2,11 +2,11 @@ import re
 
 import xbmc
 import xbmcgui
-from . import kodigui
-from . import hdhr
+import kodigui
+import hdhr
 
-from . import util
-from .util import T
+import util
+from util import T
 
 class RecordDialog(kodigui.BaseDialog):
     EPISODE_LIST = 201

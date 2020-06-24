@@ -7,7 +7,7 @@ except:
     from ordereddict_compat import OrderedDict
 
 from lib import util
-from . import errors
+import errors
 
 
 def chanTuple(guide_number,chanCount):
@@ -69,7 +69,7 @@ class LineUp(object):
 
     def index(self,key):
         if not key in self.channels: return -1
-        return list(self.channels.keys()).index(key)
+        return self.channels.keys().index(key)
 
     def indexed(self,index):
         if index < 0 or index >= len(self):
