@@ -2,8 +2,8 @@
 import requests
 import urllib
 import time
-import guide
-import errors
+from . import guide
+from . import errors
 from lib import util
 
 MY = 'api'
@@ -200,6 +200,48 @@ class RecordingRule(dict):
 
         return self
 
+#"SeriesID":"MV008857200000",
+#"Title":"Adventures in Babysitting"
+#"Category":"movie",
+#"ImageURL":"http://img.hdhomerun.com/titles/MV008857200000.jpg",
+#"PosterURL":"http://img.hdhomerun.com/posters/MV008857200000.jpg",
+#"StartTime":1589760000,
+#"EpisodesURL":"http://192.168.0.220:50000/recorded_files.json?SeriesID=MV008857200000",
+#"UpdateID":911500988
+
+class RecordedSeries(dict):
+    @property
+    def ID(self):
+        return self.get('SeriesID')
+
+    @property
+    def title(self):
+        return self.get('Title', '')
+
+    @property
+    def category(self):
+        return self.get('Category', 'series')
+
+    @property
+    def icon(self):
+        return self.get('ImageURL', '')
+
+    @property
+    def poster(self):
+        return self.get('PosterURL', '')
+
+    @property
+    def startTimestamp(self):
+        return int(self.get('StartTime', 0))
+
+    @property
+    def episodesURL(self):
+        return self.get('EpisodesURL', '')
+
+    @property
+    def updateID(self):
+        return int(self.get('UpdateID', 0))
+
 #"ChannelAffiliate":"CBS",
 #"ChannelImageURL":"http://my.hdhomerun.com/fyimediaservices/v_3_3_6_1/Station.svc/2/765/Logo/120x120",
 #"ChannelName":"KIRO-DT",
@@ -305,8 +347,13 @@ class StorageServers(object):
         err = None
         for d in self._devices.storageServers:
             try:
-                recs = d.recordings()
-                if recs: self._recordings += [Recording(r) for r in recs]
+                recseries = [RecordedSeries(s) for s in d.recordedSeries()]
+                if recseries:
+                    for rs in recseries:
+                        req = requests.get(rs.episodesURL)
+                        recs = req.json()
+                        if recs: 
+                            self._recordings += [Recording(r) for r in recs]
             except:
                 err = util.ERROR()
 

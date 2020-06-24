@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 import xbmc, xbmcgui
-import util
+from . import util
 
 TRANSCODE_PROFILES = (None,'none','heavy','mobile','internet540','internet480','internet360','internet240')
 
@@ -57,7 +57,7 @@ class HDHRPlayer(xbmc.Player):
 
         return self
 
-    def onPlayBackStarted(self):
+    def onAVStarted(self):
         self.status('STARTED')
         if False and self.status.channel:
             util.DEBUG_LOG('Saving successful channel number as last: {0}'.format(self.status.channel.number))
@@ -108,6 +108,7 @@ class HDHRPlayer(xbmc.Player):
         }
         item.setInfo('video', info)
         item.setMimeType('video/mp2t')
+        item.setProperty('isrealtimestream', 'true')
         util.setSetting('last.channel', channel.number)
         self.status('NOT_STARTED',channel,item)
         args = self.getArgs()
@@ -149,7 +150,7 @@ class FullsceenVideoInitializer(xbmc.Player):
         self._finished = False
         if self.isPlaying():
             return self.finish()
-        dummy = os.path.join(xbmc.translatePath(util.ADDON.getAddonInfo('path')).decode('utf-8'),'resources','dummy.mp4')
+        dummy = os.path.join(xbmc.translatePath(util.ADDON.getAddonInfo('path')),'resources','dummy.mp4')
         self.play(dummy)
         while not self._finished:
             xbmc.sleep(100)
